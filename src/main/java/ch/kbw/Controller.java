@@ -11,8 +11,8 @@ import javafx.scene.layout.Pane;
 
 public class Controller {
 
-    String x="ATGC";
-    String y="CATA";
+    String x="";
+    String y="";
 
     public int[][] kosten;
 
@@ -20,6 +20,10 @@ public class Controller {
 
     Model model;
 
+    /***
+     *
+     * @param model
+     */
     public void setModel(Model model) {
         this.model = model;
     }
@@ -43,6 +47,9 @@ public class Controller {
     Cell[][] cells;
 
 
+    /***
+     *
+     */
     @FXML
     protected void initialize(){
 
@@ -56,7 +63,11 @@ public class Controller {
 
     }
 
-    //Button-Event -> Wenn der Start Button gedrückt wird, wird diese Methode aufgerufen.
+    /***
+     *
+     * @param f
+     * Button-Event -> Wenn der Start Button gedrückt wird, wird diese Methode aufgerufen.
+     */
     @FXML
     private void start(ActionEvent f){
 
@@ -92,6 +103,14 @@ public class Controller {
 
     }
 
+
+    /***
+     *
+     * @param x     -> Die DNA Sequenz
+     * @param pos1  -> Die erste Position im String (Diese ist fast immer 0)
+     * @param pos2  -> Die zweit Position im String
+     * @return
+     */
     public String subStrong(String x, int pos1, int pos2){
         return x.substring(pos1, pos2);
     }
