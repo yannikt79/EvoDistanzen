@@ -17,8 +17,8 @@ public class Controller {
     String y="";
 
     public int[][] kosten;
-
-    public int[][] kostenStriche;
+    
+    public String[][] kosti;
 
 
 
@@ -71,9 +71,10 @@ public class Controller {
         ypanee.getChildren().add(ygrid);
         xpanee.getChildren().add(xgrid);
 
-        getit();
-        getkosten();
+        //getit();
+        //getkosten();
         getsidebars();
+        displaykosten();
         reset();
 
 
@@ -113,9 +114,11 @@ public class Controller {
             x = field1.getText();
             y = field2.getText();
 
-            getit();
-            getkosten();
+            //getit();
+            //getkosten();
             getsidebars();
+            getkosti();
+            displaykosten();
         }
 
 
@@ -221,22 +224,23 @@ public class Controller {
 
 
 
+    /*
     public void getkosten(){
 
-        cells = new Cell[x.length()*2+2][y.length()*2+2];
-        grid.setPrefSize((x.length()*2+2)*25,(y.length()*2+2)*25);
+        cells = new Cell[y.length()*2+2][x.length()*2+2];
+        grid.setPrefSize((y.length()*2+2)*25,(x.length()*2+2)*25);
         grid.setAlignment(Pos.CENTER);
         int p1=0;
         int p2=0;
-        for (int i=1;i<x.length()*2+1;i++){
+        for (int i=1;i<y.length()*2+1;i++){
             if(p1==0){
                 i=0;
             }
-            for (int j=1;j<y.length()*2+1;j++){
+            for (int j=1;j<x.length()*2+1;j++){
                 if(p2==0){
                     j=0;
                 }
-               cells[i][j]= new Cell(kosten[p1][p2]);
+               cells[i][j]= new Cell(kosten[p2][p1]);
                cells[i][j].setPrefHeight(25);
                cells[i][j].setPrefWidth(25);
                cells[i][j].setMaxHeight(25);
@@ -245,7 +249,7 @@ public class Controller {
                cells[i][j].setMinWidth(25);
                cells[i][j].setAlignment(Pos.CENTER);
                cells[i][j].setText("");
-               cells[i][j].setText(Integer.toString(kosten[p1][p2]));
+               cells[i][j].setText(Integer.toString(kosten[p2][p1]));
                 grid.add(cells[i][j],i,j,1,1);
 
 
@@ -256,18 +260,15 @@ public class Controller {
             p1++;
             i++;
         }
-        System.out.println("Done -- 257");
     }
 
-    public void getkostenStriche(int pos1, int pos2){
+     */
 
 
-        System.out.println("Done1 -- 291");
-    }
 
+    /*
     //Erstellt einen Zweidimensionalen Array, mit den Kosten für jede Mutation
     public void getit(){
-
 
         kosten = new int[x.length()+1][y.length()+1];
         for (int i=0;i<x.length()+1;i++){
@@ -279,6 +280,228 @@ public class Controller {
     }
 
 
+     */
+
+    public void displaykosten(){
+
+        cells = new Cell[y.length()*2+1][x.length()*2+1];
+        grid.setPrefSize((x.length()*2+1)*25,(y.length()*2+1)*25);
+        grid.setAlignment(Pos.CENTER);
+        int p1=0;
+        int p2=0;
+        for (int i=1;i<y.length()*2+1;i++){
+            if(p1==0){
+                i=0;
+            }
+            int k1= i;
+            for (int j=1;j<x.length()*2+1;j++){
+                if(p2==0){
+                    j=0;
+                }
+                int k2=j;
+                cells[i][j]= new Cell(kosti[k2][k1]);
+                cells[i][j].setPrefHeight(25);
+                cells[i][j].setPrefWidth(25);
+                cells[i][j].setMaxHeight(25);
+                cells[i][j].setMaxWidth(25);
+                cells[i][j].setMinHeight(25);
+                cells[i][j].setMinWidth(25);
+                cells[i][j].setAlignment(Pos.CENTER);
+                cells[i][j].setText("");
+                cells[i][j].setText(kosti[k2][k1]);
+                grid.add(cells[i][j],i,j,1,1);
+
+
+                p2++;
+            }
+            p2=0;
+            p1++;
+        }
+        p1=0;
+    }
+    
+    public void getkosti(){
+        kosti = new String[x.length()*2+1][y.length()*2+1];
+        int p1=0;
+        int p2=0;
+        for (int i=1;i<x.length()*2+1;i++){
+            if(p1==0){
+                i=0;
+            }
+            for (int j=1;j<y.length()*2+1;j++){
+                if(p2==0){
+                    j=0;
+                }
+                
+                kosti[i][j] = getcosti(i,j,p1,p2);
+
+                p2++;
+                j++;
+            }
+            p2=0;
+            p1++;
+            i++;
+        }
+
+        p1=0;
+        p2=0;
+        for (int i=1;i<x.length()*2+1;i++){
+            for (int j=1;j<y.length()*2+1;j++){
+                if(p2==0){
+                    j=0;
+                }
+
+                if(kosti[i][j] == null){
+                    kosti[i][j]= " ";
+                }
+
+                p2++;
+                j++;
+            }
+            p2=0;
+            p1++;
+            i++;
+        }
+
+        p1=0;
+        p2=0;
+        for (int i=1;i<x.length()*2+1;i++){
+            if(p1==0){
+                i=0;
+            }
+            for (int j=1;j<y.length()*2+1;j++){
+
+                if(kosti[i][j]== null){
+                    kosti[i][j]= " ";
+                }
+
+                p2++;
+                j++;
+            }
+            p2=0;
+            p1++;
+            i++;
+        }
+        for (int i=1;i<x.length()*2+1;i++){
+            for (int j=1;j<y.length()*2+1;j++){
+
+                if(kosti[i][j]== null){
+                    kosti[i][j]= " ";
+                }
+
+                j++;
+            }
+            i++;
+        }
+
+        p1=0;
+        p2=0;
+        for (int i=1;i<x.length()*2+1;i++){
+            if(p1==0){
+                i=0;
+            }
+            for (int j=1;j<y.length()*2+1;j++){
+                if(p2==0){
+                    j=0;
+                }
+
+                System.out.print(kosti[i][j]);
+                System.out.print("\t");
+
+                p2++;
+            }
+            System.out.println("");
+            p2=0;
+            p1++;
+        }
+
+
+        
+        
+        
+    }
+
+    //Ermittelt die Kosten für jede Mutation
+    public String getcosti(int i, int j, int p1, int p2){
+
+        //Wenn i = 0 und j = 0 ist, gibt es logischerweise keine Kosten
+        if (i==0&&j==0){
+            return kosti[i][j]="0";
+        } else
+            //Wenn i = 0 ist, dann ist nur einfügen möglich
+            if(i==0){
+                kosti[i][j-1]="-";
+                return einfuegeni(i,j);
+            } else
+                //Wenn j = 0 ist, dann ist nur streichen möglich
+                if(j==0){
+                    kosti[i-1][j]="|";
+                    return streicheni(i,j);
+                } else{
+
+                    //Wenn die Zeichen gleich sind, dann gibt es logischerweise keine weiteren Kosten, als die bisherigen
+                    if(x.substring(p1-1,p1).equals(y.substring(p2-1,p2))){
+                        kosti[i-1][j-1] = "\\";
+                        return kosti[i-2][j-2];
+
+                    }
+
+                    int[] costs = {Integer.parseInt(streicheni(i,j)),Integer.parseInt(einfuegeni(i,j)),Integer.parseInt(ersetzteni(i,j))};
+                    int[] costs2 = {Integer.parseInt(streicheni(i,j)),Integer.parseInt(einfuegeni(i,j)),Integer.parseInt(ersetzteni(i,j))};
+
+                    Arrays.sort(costs);
+
+                    //Überprüft, welche der drei Möglichkeiten die geringsten Kosten hat
+                    if(costs[0]==costs2[0]){
+                        kosti[i-1][j]="|";
+                        if(costs[0]==costs2[1]){
+                            kosti[i][j-1]="-";
+                        }
+                        if (costs[0]==costs2[2]){
+                            kosti[i-1][j-1]="\\";
+                        }
+                        return Integer.toString(costs2[0]);
+                    }else if(costs[0]==costs2[1]){
+                        if (costs[0]==costs2[2]){
+                            kosti[i-1][j-1]="\\";
+                        }
+                        kosti[i][j-1]="-";
+                        return Integer.toString(costs2[1]);
+                    }else if(costs[0]==costs2[2]){
+                        kosti[i-1][j-1]="\\";
+                        return Integer.toString(costs2[2]);
+                    }
+
+
+                }
+        //Wenn dieser Debug in der Konsole erscheint, dann ist etwas nicht korrekt gelaufen.
+        System.out.println("Something went wrong at ("+i+", "+j+")");
+        return null;
+
+    }
+
+    public String streicheni(int i, int j){
+        int p = Integer.parseInt(kosti[i-2][j])+2;
+
+        return Integer.toString(p);
+
+    }
+
+    public String einfuegeni(int i, int j){
+        int p = Integer.parseInt(kosti[i][j-2])+2;
+
+        return Integer.toString(p);
+
+    }
+
+    public String ersetzteni(int i, int j){
+        int p = Integer.parseInt(kosti[i-2][j-2])+3;
+
+        return Integer.toString(p);
+
+    }
+
+/*
     //Ermittelt die Kosten für jede Mutation
     public int getcost(int i, int j){
 
@@ -340,6 +563,8 @@ public class Controller {
 
     }
 
+ */
+
 
     //Funktion um den günstigsten der drei Wert zu ermitteln
     public int getSmallest(int[] a){
@@ -372,11 +597,9 @@ public class Controller {
                 if(p2==0){
                     j=0;
                 }
-               cells[i][j].setText("");
-                j++;
+               cells[j][i].setText("");
                 p2++;
             }
-            i++;
             p1++;
             p2=0;
         }
