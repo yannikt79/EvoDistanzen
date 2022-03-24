@@ -123,7 +123,6 @@ public class Controller {
     public void getsidebars(){
 
         ycells = new Cell[y.length()*2+1][2];
-        ygrid.setPrefSize((y.length()*2+1)*25,50);
         ygrid.setAlignment(Pos.CENTER);
         int p=0;
         for(int i=1;i<y.length()*2+1;i++){
@@ -172,7 +171,6 @@ public class Controller {
         }
 
         xcells = new Cell[2][x.length()*2+1];
-        xgrid.setPrefSize(50,(x.length()*2+1)*25);
         xgrid.setAlignment(Pos.CENTER);
         int p3=0;
         for(int i=1;i<x.length()*2+1;i++){
@@ -221,7 +219,6 @@ public class Controller {
     public void displaykosten(){
 
         cells = new Cell[y.length()*2+1][x.length()*2+1];
-        grid.setPrefSize((x.length()*2+1)*25,(y.length()*2+1)*25);
         grid.setAlignment(Pos.CENTER);
         int p1=0;
         int p2=0;
