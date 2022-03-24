@@ -5,14 +5,17 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchor" prefHeight="302.0" prefWidth="333.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.kbw.Controller">
+<AnchorPane fx:id="anchor" prefHeight="423.0" prefWidth="333.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.kbw.Controller">
    <children>
-      <VBox layoutY="-5.0" prefHeight="302.0" prefWidth="333.0">
+      <VBox layoutY="-5.0" prefHeight="429.0" prefWidth="333.0">
          <children>
             <Label maxWidth="1.7976931348623157E308" />
             <Label alignment="CENTER" contentDisplay="TOP" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Berechnung Evolutionärer Distanz">
@@ -57,7 +60,21 @@
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </padding>
             </HBox>
-            <Pane fx:id="panee" prefHeight="200.0" prefWidth="200.0" />
+            <GridPane prefHeight="278.0" prefWidth="333.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="95.33336639404297" minWidth="3.333345413208008" prefWidth="28.9999917348226" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="312.00000826517737" minWidth="10.0" prefWidth="304.00000826517737" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints maxHeight="85.3333231608073" minHeight="0.0" prefHeight="29.666656494140625" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="274.66665140787757" minHeight="10.0" prefHeight="249.00001017252606" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Pane fx:id="panee" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Pane fx:id="ypanee" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" />
+                  <Pane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" fx:id="xpanee" />
+               </children>
+            </GridPane>
          </children>
       </VBox>
    </children>

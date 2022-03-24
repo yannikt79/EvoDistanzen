@@ -9,6 +9,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
+import java.util.Arrays;
+
 public class Controller {
 
     String x="";
@@ -35,6 +37,12 @@ public class Controller {
     Pane panee;
 
     @FXML
+    Pane ypanee;
+
+    @FXML
+    Pane xpanee;
+
+    @FXML
     TextField field1;
 
     @FXML
@@ -44,7 +52,11 @@ public class Controller {
     Button startbutton;
 
     GridPane grid = new GridPane();
+    GridPane ygrid = new GridPane();
+    GridPane xgrid = new GridPane();
     Cell[][] cells;
+    Cell[][] ycells;
+    Cell[][] xcells;
 
 
     /***
@@ -54,9 +66,12 @@ public class Controller {
     protected void initialize(){
 
         panee.getChildren().add(grid);
+        ypanee.getChildren().add(ygrid);
+        xpanee.getChildren().add(xgrid);
 
         getit();
         getkosten();
+        getsidebars();
         reset();
 
 
@@ -98,22 +113,92 @@ public class Controller {
 
             getit();
             getkosten();
+            getsidebars();
         }
 
 
     }
 
+    public void getsidebars(){
 
-    /***
-     *
-     * @param x     -> Die DNA Sequenz
-     * @param pos1  -> Die erste Position im String (Diese ist fast immer 0)
-     * @param pos2  -> Die zweit Position im String
-     * @return
-     */
-    public String subStrong(String x, int pos1, int pos2){
-        return x.substring(pos1, pos2);
+        ycells = new Cell[y.length()*2+1][2];
+        ygrid.setPrefSize((y.length()*2+1)*25,50);
+        ygrid.setAlignment(Pos.CENTER);
+        int p=0;
+        for(int i=1;i<y.length()*2+1;i++){
+
+
+
+            ycells[i][0]= new Cell(y.substring(p,p+1));
+            ycells[i][0].setPrefHeight(25);
+            ycells[i][0].setPrefWidth(25);
+            ycells[i][0].setMaxHeight(25);
+            ycells[i][0].setMaxWidth(25);
+            ycells[i][0].setMinHeight(25);
+            ycells[i][0].setMinWidth(25);
+            ycells[i][0].setAlignment(Pos.CENTER);
+            ycells[i][0].setText("");
+            ycells[i][0].setText(y.substring(p,p+1));
+
+            ygrid.add(ycells[i][0],i,0,1,1);
+
+            ycells[i-1][1]= new Cell(Integer.toString(p));
+            ycells[i-1][1].setPrefHeight(25);
+            ycells[i-1][1].setPrefWidth(25);
+            ycells[i-1][1].setMaxHeight(25);
+            ycells[i-1][1].setMaxWidth(25);
+            ycells[i-1][1].setMinHeight(25);
+            ycells[i-1][1].setMinWidth(25);
+            ycells[i-1][1].setAlignment(Pos.CENTER);
+            ycells[i-1][1].setText("");
+            ycells[i-1][1].setText(Integer.toString(p));
+
+            ygrid.add(ycells[i-1][1],i-1,1,1,1);
+            p++;
+            i++;
+
+        }
+
+        xcells = new Cell[2][x.length()*2+1];
+        xgrid.setPrefSize(50,(x.length()*2+1)*25);
+        xgrid.setAlignment(Pos.CENTER);
+        int p2=0;
+        for(int i=1;i<x.length()*2+1;i++){
+
+
+
+            xcells[0][i]= new Cell(x.substring(p2,p2+1));
+            xcells[0][i].setPrefHeight(25);
+            xcells[0][i].setPrefWidth(25);
+            xcells[0][i].setMaxHeight(25);
+            xcells[0][i].setMaxWidth(25);
+            xcells[0][i].setMinHeight(25);
+            xcells[0][i].setMinWidth(25);
+            xcells[0][i].setAlignment(Pos.CENTER);
+            xcells[0][i].setText("");
+            xcells[0][i].setText(x.substring(p2,p2+1));
+
+            xgrid.add(xcells[0][i],0,i,1,1);
+
+            xcells[1][i-1]= new Cell(Integer.toString(p2));
+            xcells[1][i-1].setPrefHeight(25);
+            xcells[1][i-1].setPrefWidth(25);
+            xcells[1][i-1].setMaxHeight(25);
+            xcells[1][i-1].setMaxWidth(25);
+            xcells[1][i-1].setMinHeight(25);
+            xcells[1][i-1].setMinWidth(25);
+            xcells[1][i-1].setAlignment(Pos.CENTER);
+            xcells[1][i-1].setText("");
+            xcells[1][i-1].setText(Integer.toString(p2));
+
+            xgrid.add(xcells[1][i-1],1,i-1,1,1);
+            p2++;
+            i++;
+
+        }
     }
+
+
 
     public void getkosten(){
 
@@ -141,7 +226,7 @@ public class Controller {
             }
 
         }
-        System.out.println("Fertig");
+        System.out.println("Done");
     }
 
     //Erstellt einen Zweidimensionalen Array, mit den Kosten für jede Mutation
@@ -174,27 +259,28 @@ public class Controller {
         } else{
 
                 //Wenn die Zeichen gleich sind, dann gibt es logischerweise keine weitern Kosten, als die bisherigen
-            if(subStrong(x,i-1,i).equals(subStrong(y,j-1,j))){
+            if(x.substring(i-1,i).equals(y.substring(j-1,j))){
                 return kosten[i-1][j-1];
             }
 
             int[] costs = {streichen(i,j),einfuegen(i,j),ersetzten(i,j)};
             int[] costs2 = {streichen(i,j),einfuegen(i,j),ersetzten(i,j)};
 
+            Arrays.sort(costs);
 
             //Überprüft, welche der drei Möglichkeiten die geringsten Kosten hat
-            if(getSmallest(costs)==costs2[0]){
+            if(costs[0]==costs2[0]){
                 return costs2[0];
-            }else if(getSmallest(costs)==costs2[1]){
+            }else if(costs[0]==costs2[1]){
                 return costs2[1];
-            }else if(getSmallest(costs)==costs2[2]){
+            }else if(costs[0]==costs2[2]){
                 return costs2[2];
             }
 
 
         }
             //Wenn dieser Debug in der Konsole erscheint, dann ist etwas nicht korrekt gelaufen.
-        System.out.println("DEBUG 1000");
+        System.out.println("Something went wrong at ("+i+", "+j+")");
         return 0;
 
     }
@@ -241,11 +327,17 @@ public class Controller {
         for (int i=0;i<x.length()+1;i++) {
             for (int j = 0; j < y.length() + 1; j++) {
                 cells[i][j].setText("");
-
-
             }
-
         }
 
+        for(int i=1;i<x.length()*2+1;i++) {
+            xcells[0][i].setText("");
+            i++;
+        }
+
+        for(int i=1;i<y.length()*2+1;i++) {
+            ycells[i][0].setText("");
+            i++;
+        }
     }
 }

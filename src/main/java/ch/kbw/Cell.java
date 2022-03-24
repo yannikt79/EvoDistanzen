@@ -7,12 +7,17 @@ public class Cell extends Label {
 
 
     int wert;
+    String stringwert;
     public Cell(){
         super();
     }
 
     public Cell(int wert){
         this.wert = wert;
+    }
+
+    public Cell(String stringwert){
+        this.stringwert=stringwert;
     }
 
     public int getWert() {
