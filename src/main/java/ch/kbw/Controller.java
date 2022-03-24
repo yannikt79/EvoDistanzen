@@ -16,8 +16,6 @@ public class Controller {
     String x="";
     String y="";
 
-    public int[][] kosten;
-    
     public String[][] kosti;
 
 
@@ -71,8 +69,7 @@ public class Controller {
         ypanee.getChildren().add(ygrid);
         xpanee.getChildren().add(xgrid);
 
-        //getit();
-        //getkosten();
+
         getsidebars();
         displaykosten();
         reset();
@@ -114,8 +111,7 @@ public class Controller {
             x = field1.getText();
             y = field2.getText();
 
-            //getit();
-            //getkosten();
+
             getsidebars();
             getkosti();
             displaykosten();
@@ -221,66 +217,6 @@ public class Controller {
             i++;
         }
     }
-
-
-
-    /*
-    public void getkosten(){
-
-        cells = new Cell[y.length()*2+2][x.length()*2+2];
-        grid.setPrefSize((y.length()*2+2)*25,(x.length()*2+2)*25);
-        grid.setAlignment(Pos.CENTER);
-        int p1=0;
-        int p2=0;
-        for (int i=1;i<y.length()*2+1;i++){
-            if(p1==0){
-                i=0;
-            }
-            for (int j=1;j<x.length()*2+1;j++){
-                if(p2==0){
-                    j=0;
-                }
-               cells[i][j]= new Cell(kosten[p2][p1]);
-               cells[i][j].setPrefHeight(25);
-               cells[i][j].setPrefWidth(25);
-               cells[i][j].setMaxHeight(25);
-               cells[i][j].setMaxWidth(25);
-               cells[i][j].setMinHeight(25);
-               cells[i][j].setMinWidth(25);
-               cells[i][j].setAlignment(Pos.CENTER);
-               cells[i][j].setText("");
-               cells[i][j].setText(Integer.toString(kosten[p2][p1]));
-                grid.add(cells[i][j],i,j,1,1);
-
-
-                p2++;
-                j++;
-            }
-            p2=0;
-            p1++;
-            i++;
-        }
-    }
-
-     */
-
-
-
-    /*
-    //Erstellt einen Zweidimensionalen Array, mit den Kosten für jede Mutation
-    public void getit(){
-
-        kosten = new int[x.length()+1][y.length()+1];
-        for (int i=0;i<x.length()+1;i++){
-            for (int j=0;j<y.length()+1;j++){
-                kosten[i][j]= getcost(i,j);
-            }
-        }
-
-    }
-
-
-     */
 
     public void displaykosten(){
 
@@ -501,88 +437,6 @@ public class Controller {
 
     }
 
-/*
-    //Ermittelt die Kosten für jede Mutation
-    public int getcost(int i, int j){
-
-        //Wenn i = 0 und j = 0 ist, gibt es logischerweise keine Kosten
-        if (i==0&&j==0){
-            return kosten[i][j]=0;
-        } else
-            //Wenn i = 0 ist, dann ist nur einfügen möglich
-            if(i==0){
-            return einfuegen(i,j);
-        } else
-            //Wenn j = 0 ist, dann ist nur streichen möglich
-            if(j==0){
-            return streichen(i,j);
-        } else{
-
-                //Wenn die Zeichen gleich sind, dann gibt es logischerweise keine weitern Kosten, als die bisherigen
-            if(x.substring(i-1,i).equals(y.substring(j-1,j))){
-                return kosten[i-1][j-1];
-            }
-
-            int[] costs = {streichen(i,j),einfuegen(i,j),ersetzten(i,j)};
-            int[] costs2 = {streichen(i,j),einfuegen(i,j),ersetzten(i,j)};
-
-            Arrays.sort(costs);
-
-            //Überprüft, welche der drei Möglichkeiten die geringsten Kosten hat
-            if(costs[0]==costs2[0]){
-                return costs2[0];
-            }else if(costs[0]==costs2[1]){
-                return costs2[1];
-            }else if(costs[0]==costs2[2]){
-                return costs2[2];
-            }
-
-
-        }
-            //Wenn dieser Debug in der Konsole erscheint, dann ist etwas nicht korrekt gelaufen.
-        System.out.println("Something went wrong at ("+i+", "+j+")");
-        return 0;
-
-    }
-
-    public int streichen(int i, int j){
-
-        return kosten[i-1][j]+2;
-
-    }
-
-    public int einfuegen(int i, int j){
-
-        return kosten[i][j-1]+2;
-
-    }
-
-    public int ersetzten(int i, int j){
-
-        return kosten[i-1][j-1]+3;
-
-    }
-
- */
-
-
-    //Funktion um den günstigsten der drei Wert zu ermitteln
-    public int getSmallest(int[] a){
-        int temp;
-        for (int i = 0; i < a.length; i++)
-        {
-            for (int j = i + 1; j < a.length; j++)
-            {
-                if (a[i] > a[j])
-                {
-                    temp = a[i];
-                    a[i] = a[j];
-                    a[j] = temp;
-                }
-            }
-        }
-        return a[0];
-    }
 
     //Setzt einfach den Inhalt des GridPane zurück
     public void reset(){
