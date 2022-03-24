@@ -18,6 +18,8 @@ public class Controller {
 
     public int[][] kosten;
 
+    public int[][] kostenStriche;
+
 
 
     Model model;
@@ -142,32 +144,43 @@ public class Controller {
 
             ygrid.add(ycells[i][0],i,0,1,1);
 
-            ycells[i-1][1]= new Cell(Integer.toString(p));
-            ycells[i-1][1].setPrefHeight(25);
-            ycells[i-1][1].setPrefWidth(25);
-            ycells[i-1][1].setMaxHeight(25);
-            ycells[i-1][1].setMaxWidth(25);
-            ycells[i-1][1].setMinHeight(25);
-            ycells[i-1][1].setMinWidth(25);
-            ycells[i-1][1].setAlignment(Pos.CENTER);
-            ycells[i-1][1].setText("");
-            ycells[i-1][1].setText(Integer.toString(p));
-
-            ygrid.add(ycells[i-1][1],i-1,1,1,1);
             p++;
             i++;
 
         }
 
+        int p2=0;
+        for(int i=1;i<y.length()*2+1;i++){
+            if(p2==0){
+                i=0;
+            }
+
+
+            ycells[i][1]= new Cell(Integer.toString(p2));
+            ycells[i][1].setPrefHeight(25);
+            ycells[i][1].setPrefWidth(25);
+            ycells[i][1].setMaxHeight(25);
+            ycells[i][1].setMaxWidth(25);
+            ycells[i][1].setMinHeight(25);
+            ycells[i][1].setMinWidth(25);
+            ycells[i][1].setAlignment(Pos.CENTER);
+            ycells[i][1].setText("");
+            ycells[i][1].setText(Integer.toString(p2));
+
+            ygrid.add(ycells[i][1],i,1,1,1);
+            p2++;
+            i++;
+        }
+
         xcells = new Cell[2][x.length()*2+1];
         xgrid.setPrefSize(50,(x.length()*2+1)*25);
         xgrid.setAlignment(Pos.CENTER);
-        int p2=0;
+        int p3=0;
         for(int i=1;i<x.length()*2+1;i++){
 
 
 
-            xcells[0][i]= new Cell(x.substring(p2,p2+1));
+            xcells[0][i]= new Cell(x.substring(p3,p3+1));
             xcells[0][i].setPrefHeight(25);
             xcells[0][i].setPrefWidth(25);
             xcells[0][i].setMaxHeight(25);
@@ -176,25 +189,33 @@ public class Controller {
             xcells[0][i].setMinWidth(25);
             xcells[0][i].setAlignment(Pos.CENTER);
             xcells[0][i].setText("");
-            xcells[0][i].setText(x.substring(p2,p2+1));
+            xcells[0][i].setText(x.substring(p3,p3+1));
 
             xgrid.add(xcells[0][i],0,i,1,1);
-
-            xcells[1][i-1]= new Cell(Integer.toString(p2));
-            xcells[1][i-1].setPrefHeight(25);
-            xcells[1][i-1].setPrefWidth(25);
-            xcells[1][i-1].setMaxHeight(25);
-            xcells[1][i-1].setMaxWidth(25);
-            xcells[1][i-1].setMinHeight(25);
-            xcells[1][i-1].setMinWidth(25);
-            xcells[1][i-1].setAlignment(Pos.CENTER);
-            xcells[1][i-1].setText("");
-            xcells[1][i-1].setText(Integer.toString(p2));
-
-            xgrid.add(xcells[1][i-1],1,i-1,1,1);
-            p2++;
+            p3++;
             i++;
 
+        }
+
+        int p4=0;
+        for(int i=1;i<x.length()*2+1;i++){
+            if(p4==0){
+                i=0;
+            }
+            xcells[1][i]= new Cell(Integer.toString(p4));
+            xcells[1][i].setPrefHeight(25);
+            xcells[1][i].setPrefWidth(25);
+            xcells[1][i].setMaxHeight(25);
+            xcells[1][i].setMaxWidth(25);
+            xcells[1][i].setMinHeight(25);
+            xcells[1][i].setMinWidth(25);
+            xcells[1][i].setAlignment(Pos.CENTER);
+            xcells[1][i].setText("");
+            xcells[1][i].setText(Integer.toString(p4));
+
+            xgrid.add(xcells[1][i],1,i,1,1);
+            p4++;
+            i++;
         }
     }
 
@@ -202,35 +223,51 @@ public class Controller {
 
     public void getkosten(){
 
-        cells = new Cell[x.length()+1][y.length()+1];
-        grid.setPrefSize((x.length()+1)*25,(y.length()+1)*25);
+        cells = new Cell[x.length()*2+2][y.length()*2+2];
+        grid.setPrefSize((x.length()*2+2)*25,(y.length()*2+2)*25);
         grid.setAlignment(Pos.CENTER);
-        for (int i=0;i<x.length()+1;i++){
-            for (int j=0;j<y.length()+1;j++){
-
-
-                cells[i][j]= new Cell(kosten[i][j]);
-                cells[i][j].setPrefHeight(25);
-                cells[i][j].setPrefWidth(25);
-                cells[i][j].setMaxHeight(25);
-                cells[i][j].setMaxWidth(25);
-                cells[i][j].setMinHeight(25);
-                cells[i][j].setMinWidth(25);
-                cells[i][j].setAlignment(Pos.CENTER);
-                cells[i][j].setText("");
-                cells[i][j].setText(Integer.toString(kosten[i][j]));
-
+        int p1=0;
+        int p2=0;
+        for (int i=1;i<x.length()*2+1;i++){
+            if(p1==0){
+                i=0;
+            }
+            for (int j=1;j<y.length()*2+1;j++){
+                if(p2==0){
+                    j=0;
+                }
+               cells[i][j]= new Cell(kosten[p1][p2]);
+               cells[i][j].setPrefHeight(25);
+               cells[i][j].setPrefWidth(25);
+               cells[i][j].setMaxHeight(25);
+               cells[i][j].setMaxWidth(25);
+               cells[i][j].setMinHeight(25);
+               cells[i][j].setMinWidth(25);
+               cells[i][j].setAlignment(Pos.CENTER);
+               cells[i][j].setText("");
+               cells[i][j].setText(Integer.toString(kosten[p1][p2]));
                 grid.add(cells[i][j],i,j,1,1);
 
 
+                p2++;
+                j++;
             }
-
+            p2=0;
+            p1++;
+            i++;
         }
-        System.out.println("Done");
+        System.out.println("Done -- 257");
+    }
+
+    public void getkostenStriche(int pos1, int pos2){
+
+
+        System.out.println("Done1 -- 291");
     }
 
     //Erstellt einen Zweidimensionalen Array, mit den Kosten für jede Mutation
     public void getit(){
+
 
         kosten = new int[x.length()+1][y.length()+1];
         for (int i=0;i<x.length()+1;i++){
@@ -324,10 +361,24 @@ public class Controller {
 
     //Setzt einfach den Inhalt des GridPane zurück
     public void reset(){
-        for (int i=0;i<x.length()+1;i++) {
-            for (int j = 0; j < y.length() + 1; j++) {
-                cells[i][j].setText("");
+
+        int p1=0;
+        int p2=0;
+        for (int i=1;i<x.length()*2+1;i++) {
+            if(p1==0){
+                i=0;
             }
+            for (int j = 1; j < y.length()*2+1; j++) {
+                if(p2==0){
+                    j=0;
+                }
+               cells[i][j].setText("");
+                j++;
+                p2++;
+            }
+            i++;
+            p1++;
+            p2=0;
         }
 
         for(int i=1;i<x.length()*2+1;i++) {
@@ -335,9 +386,29 @@ public class Controller {
             i++;
         }
 
+        int p3=0;
+        for(int i=1;i<x.length()*2+1;i++){
+            if(p3==0){
+                i=0;
+            }
+            xcells[1][i].setText("");
+            i++;
+            p3++;
+        }
+
         for(int i=1;i<y.length()*2+1;i++) {
             ycells[i][0].setText("");
             i++;
+        }
+
+        int p4=0;
+        for(int i=1;i<y.length()*2+1;i++) {
+            if(p4==0){
+                i=0;
+            }
+            ycells[i][1].setText("");
+            i++;
+            p4++;
         }
     }
 }
