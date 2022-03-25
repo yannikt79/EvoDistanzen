@@ -1,5 +1,5 @@
 # Evolutionaere Distanzen
-This project was made in 2021/22 by *@SaschaStu* and *@yannikt79*
+This project was made in 2021/22 by @SaschaStu and @yannikt79
 because of a project contract in the subject **Anwendung der Mathematik**.
 
 
