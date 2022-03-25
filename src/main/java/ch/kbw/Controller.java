@@ -22,7 +22,7 @@ public class Controller {
     String x="";
     String y="";
 
-    public String[][] kostenArray;
+    public String[][] costArray;
 
 
 
@@ -45,18 +45,18 @@ public class Controller {
     Pane xpanee;
 
 
-    //Input Field 1 for DNA-Sequenz a = x
+    //InputField 1 for DNA sequence a = x
     @FXML
     TextField field1;
 
-    //Input Field 2 for DNA-Sequenz b = y
+    //InputField 2 for DNA sequence b = y
     @FXML
     TextField field2;
 
     @FXML
     Button startbutton;
 
-    //Field for Errormessages
+    //Field for errormessages
     @FXML
     Label errMsgField;
 
@@ -77,51 +77,50 @@ public class Controller {
 
 
         getsidebars();
-        displaykosten();
+        displayCosts();
         reset();
 
 
 
     }
 
-   //Diese Methode ist an den Startbutton gebindet.
+   //This method is binded to the startButton.
     @FXML
     private void start(ActionEvent f){
 
-        //Überprüfen, ob eines der beiden oder beide keinen Wert enthält.
+        //Checks, if both fields are empty
         if (field1.getText().isEmpty()&& field2.getText().isEmpty()){
             reset();
-            errMsgField.setText("Bitte geben Sie zwei DNA-Sequenz an.");
-        } else if(field2.getText().isEmpty()){
+            errMsgField.setText("Please enter two DNA sequence.");
+        } else
+            //Checks, if one of the two fields is empty
+            if(field2.getText().isEmpty() || field1.getText().isEmpty()){
             reset();
-            errMsgField.setText("Bitte geben Sie zwei DNA-Sequenz an.");
-        } else if (field1.getText().isEmpty()){
-            reset();
-            errMsgField.setText("Bitte geben Sie zwei DNA-Sequenz an.");
-        }else
-            //Überprüft, ob die beiden Wert gleich sind.
+            errMsgField.setText("Please enter two DNA sequence.");
+        } else
+            //Checks, if the content of the two fields is the same
             if(field1.getText().equals(field2.getText())){
                 reset();
-                errMsgField.setText("Bitte geben Sie zwei unterschiedliche DNA-Sequenzen an.");
+                errMsgField.setText("Please enter two different DNA sequence.");
         }
-            //Wenn keiner der obigen Fälle eintrifft, dann beginnt er damit, die Kosten zu ermitteln.
+            //If none of the above cases apply, then the determination of the costs begins
         else{
-            //Zurücksetzten aller eingetragenen Werte
+            //Resets all already entered values
             reset();
 
-            //Übergeben der eingegebenen DNA-Sequenzen an die Strings x und y
+            //Transferring the entered DNA sequences to the strings x and y
             x = field1.getText();
             y = field2.getText();
 
 
             getsidebars();
-            fillKostenArray();
-            displaykosten();
+            fillCostArray();
+            displayCosts();
         }
 
 
     }
-
+    //This method fills in the panes xpanee and ypanee with the descriptions
     public void getsidebars(){
 
         ycells = new Cell[y.length()*2+1][2];
@@ -218,7 +217,8 @@ public class Controller {
         }
     }
 
-    public void displaykosten(){
+    //fills the content of the costArray into the cells Array and puts every cells content to a grid cell
+    public void displayCosts(){
 
         cells = new Cell[y.length()*2+1][x.length()*2+1];
         grid.setAlignment(Pos.CENTER);
@@ -234,7 +234,7 @@ public class Controller {
                     j=0;
                 }
                 int k2=j;
-                cells[i][j]= new Cell(kostenArray[k2][k1]);
+                cells[i][j]= new Cell(costArray[k2][k1]);
                 cells[i][j].setPrefHeight(25);
                 cells[i][j].setPrefWidth(25);
                 cells[i][j].setMaxHeight(25);
@@ -243,7 +243,7 @@ public class Controller {
                 cells[i][j].setMinWidth(25);
                 cells[i][j].setAlignment(Pos.CENTER);
                 cells[i][j].setText("");
-                cells[i][j].setText(kostenArray[k2][k1]);
+                cells[i][j].setText(costArray[k2][k1]);
                 grid.add(cells[i][j],i,j,1,1);
 
 
@@ -254,9 +254,10 @@ public class Controller {
         }
         p1=0;
     }
-    
-    public void fillKostenArray(){
-        kostenArray = new String[x.length()*2+1][y.length()*2+1];
+
+    //This method fills the, with the getcost method calculated, costs and the specific lines
+    public void fillCostArray(){
+        costArray = new String[x.length()*2+1][y.length()*2+1];
         int p1=0;
         int p2=0;
         for (int i=1;i<x.length()*2+1;i++){
@@ -268,7 +269,7 @@ public class Controller {
                     j=0;
                 }
                 
-                kostenArray[i][j] = getcost(i,j,p1,p2);
+                costArray[i][j] = getcost(i,j,p1,p2);
 
                 p2++;
                 j++;
@@ -279,28 +280,28 @@ public class Controller {
         }
     }
 
-    //Ermittelt die Kosten für jede Mutation und die dazugehörigen Striche
+    //Calculates the costs for every mutation and the related lines
     public String getcost(int i, int j, int p1, int p2){
 
-        //Wenn i = 0 und j = 0 ist, gibt es logischerweise keine Kosten
+        //If i = 0 and j = 0, logicaly there are no costs for that mutation.
         if (i==0&&j==0){
-            return kostenArray[i][j]="0";
+            return costArray[i][j]="0";
         } else
-            //Wenn i = 0 ist, dann ist nur einfügen möglich
+            //If i = 0, only the mutation paste is possible
             if(i==0){
-                kostenArray[i][j-1]="-";
+                costArray[i][j-1]="-";
                 return einfuegen(i,j);
             } else
-                //Wenn j = 0 ist, dann ist nur streichen möglich
+                //If j = 0, only the mutation strike is possible
                 if(j==0){
-                    kostenArray[i-1][j]="|";
+                    costArray[i-1][j]="|";
                     return streichen(i,j);
                 } else{
 
-                    //Wenn die Zeichen gleich sind, dann gibt es logischerweise keine weiteren Kosten, als die bisherigen
+                    //If the character is even, logicaly there are no more costs, except the current
                     if(x.substring(p1-1,p1).equals(y.substring(p2-1,p2))){
-                        kostenArray[i-1][j-1] = "\\";
-                        return kostenArray[i-2][j-2];
+                        costArray[i-1][j-1] = "\\";
+                        return costArray[i-2][j-2];
 
                     }
 
@@ -309,68 +310,68 @@ public class Controller {
 
                     Arrays.sort(costs);
 
-                    //Überprüft, welche der drei Möglichkeiten die geringsten Kosten hat und ob andere gleichviel kosten
+                    //Checks, which one of the three possible mutations has the lowest costs or if there is more than one mutation with the lowest costs
                     if(costs[0]==costs2[0]){
-                        kostenArray[i-1][j]="|";
+                        costArray[i-1][j]="|";
                         if(costs[0]==costs2[1]){
-                            kostenArray[i][j-1]="-";
+                            costArray[i][j-1]="-";
                         }
                         if (costs[0]==costs2[2]){
-                            kostenArray[i-1][j-1]="\\";
+                            costArray[i-1][j-1]="\\";
                         }
                         return Integer.toString(costs2[0]);
                     }else if(costs[0]==costs2[1]){
                         if (costs[0]==costs2[2]){
-                            kostenArray[i-1][j-1]="\\";
+                            costArray[i-1][j-1]="\\";
                         }
-                        kostenArray[i][j-1]="-";
+                        costArray[i][j-1]="-";
                         return Integer.toString(costs2[1]);
                     }else if(costs[0]==costs2[2]){
-                        kostenArray[i-1][j-1]="\\";
+                        costArray[i-1][j-1]="\\";
                         return Integer.toString(costs2[2]);
                     }
 
 
                 }
-        //Wenn dieser Debug in der Konsole erscheint, dann ist etwas nicht korrekt gelaufen.
+        //If this Message gets printed in the console, something must have gone wrong. Because logicaly, this string can't get printed
         System.out.println("Something went wrong at ("+i+", "+j+")");
         return null;
 
     }
 
-    //Erste der drei Mutations-Möglichkeiten
+    //The first one of the three possible mutations
     public String streichen(int i, int j){
-        int p = Integer.parseInt(kostenArray[i-2][j])+2;
+        int p = Integer.parseInt(costArray[i-2][j])+2;
 
         return Integer.toString(p);
 
     }
 
-    //Zweite der drei Mutations-Möglichkeiten
+    //The second one of the three possible mutations
     public String einfuegen(int i, int j){
-        int p = Integer.parseInt(kostenArray[i][j-2])+2;
+        int p = Integer.parseInt(costArray[i][j-2])+2;
 
         return Integer.toString(p);
 
     }
 
-    //Dritte der drei Mutations-Möglichkeiten
+    //The third one of the three possible mutations
     public String ersetzten(int i, int j){
-        int p = Integer.parseInt(kostenArray[i-2][j-2])+3;
+        int p = Integer.parseInt(costArray[i-2][j-2])+3;
 
         return Integer.toString(p);
 
     }
 
 
-    //Setzt alles auf Anfang zurück
+    //Resets everything
     public void reset(){
 
-        //Der Inhalt des errMsgField Labels wird auf "" gesetzt
+        //The content of the errMsgField label is set to "".
         errMsgField.setText("");
 
 
-        //Alle Werte im grossen GridPane (kostenGrid) werden auf "" gesetzt
+        //Every value of the big GridPane (grid) is set to "".
         int p1=0;
         int p2=0;
         for (int i=1;i<x.length()*2+1;i++) {
@@ -389,7 +390,7 @@ public class Controller {
         }
 
 
-        //Die Inhalte der Sidebars werden auf "" gesetzt
+        //The contents of the sidebars is set to "".
         for(int i=1;i<x.length()*2+1;i++) {
             xcells[0][i].setText("");
             i++;
