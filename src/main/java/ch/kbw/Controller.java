@@ -11,7 +11,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import java.util.Arrays;
 
-/***
+/*
  *
  * @author S. Sturzenegger
  * @author Y. Tobler
@@ -68,9 +68,6 @@ public class Controller {
     Cell[][] xcells;
 
 
-    /***
-     *
-     */
     @FXML
     protected void initialize(){
 
