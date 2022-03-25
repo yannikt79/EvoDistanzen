@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -51,6 +52,9 @@ public class Controller {
     @FXML
     Button startbutton;
 
+    @FXML
+    Label errMsgField;
+
     GridPane grid = new GridPane();
     GridPane ygrid = new GridPane();
     GridPane xgrid = new GridPane();
@@ -88,20 +92,19 @@ public class Controller {
 
         //Überprüfen, ob eines der beiden oder beide keinen Wert enthält.
         if (field1.getText().isEmpty()&& field2.getText().isEmpty()){
-           field1.setText("Leer");
-           field2.setText("Leer");
+            reset();
+            errMsgField.setText("Bitte geben Sie zwei DNA-Sequenz an.");
         } else if(field2.getText().isEmpty()){
-            field2.setText("Leer");
+            reset();
+            errMsgField.setText("Bitte geben Sie zwei DNA-Sequenz an.");
         } else if (field1.getText().isEmpty()){
-            field1.setText("Leer");
+            reset();
+            errMsgField.setText("Bitte geben Sie zwei DNA-Sequenz an.");
         }else
             //Überprüft, ob die beiden Wert gleich sind.
             if(field1.getText().equals(field2.getText())){
-            System.out.println("Die DNA-Sequenzen sind identisch");
-        }else if(field1.getText().equals("Leer")||field2.getText().equals("Leer")){
-
-        }else if(field1.getText().equals("Leer")&&field2.getText().equals("Leer")){
-
+                reset();
+                errMsgField.setText("Bitte geben Sie zwei unterschiedliche DNA-Sequenzen an.");
         }
             //Wenn keiner der obigen Fälle eintrifft, dann beginnt er damit, die Kosten zu ermitteln.
         else{
@@ -454,6 +457,8 @@ public class Controller {
             p1++;
             p2=0;
         }
+
+        errMsgField.setText("");
 
         for(int i=1;i<x.length()*2+1;i++) {
             xcells[0][i].setText("");
