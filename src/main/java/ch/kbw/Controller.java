@@ -9,24 +9,25 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-
 import java.util.Arrays;
 
+/***
+ *
+ * @author S. Sturzenegger
+ * @author Y. Tobler
+ * @version 1.0.1 - First full version finished in March 2022
+ */
 public class Controller {
 
     String x="";
     String y="";
 
-    public String[][] kosti;
+    public String[][] kostenArray;
 
 
 
     Model model;
 
-    /***
-     *
-     * @param model
-     */
     public void setModel(Model model) {
         this.model = model;
     }
@@ -43,15 +44,19 @@ public class Controller {
     @FXML
     Pane xpanee;
 
+
+    //Input Field 1 for DNA-Sequenz a = x
     @FXML
     TextField field1;
 
+    //Input Field 2 for DNA-Sequenz b = y
     @FXML
     TextField field2;
 
     @FXML
     Button startbutton;
 
+    //Field for Errormessages
     @FXML
     Label errMsgField;
 
@@ -82,11 +87,7 @@ public class Controller {
 
     }
 
-    /***
-     *
-     * @param f
-     * Button-Event -> Wenn der Start Button gedrückt wird, wird diese Methode aufgerufen.
-     */
+   //Diese Methode ist an den Startbutton gebindet.
     @FXML
     private void start(ActionEvent f){
 
@@ -108,6 +109,7 @@ public class Controller {
         }
             //Wenn keiner der obigen Fälle eintrifft, dann beginnt er damit, die Kosten zu ermitteln.
         else{
+            //Zurücksetzten aller eingetragenen Werte
             reset();
 
             //Übergeben der eingegebenen DNA-Sequenzen an die Strings x und y
@@ -116,7 +118,7 @@ public class Controller {
 
 
             getsidebars();
-            getkosti();
+            fillKostenArray();
             displaykosten();
         }
 
@@ -235,7 +237,7 @@ public class Controller {
                     j=0;
                 }
                 int k2=j;
-                cells[i][j]= new Cell(kosti[k2][k1]);
+                cells[i][j]= new Cell(kostenArray[k2][k1]);
                 cells[i][j].setPrefHeight(25);
                 cells[i][j].setPrefWidth(25);
                 cells[i][j].setMaxHeight(25);
@@ -244,7 +246,7 @@ public class Controller {
                 cells[i][j].setMinWidth(25);
                 cells[i][j].setAlignment(Pos.CENTER);
                 cells[i][j].setText("");
-                cells[i][j].setText(kosti[k2][k1]);
+                cells[i][j].setText(kostenArray[k2][k1]);
                 grid.add(cells[i][j],i,j,1,1);
 
 
@@ -256,8 +258,8 @@ public class Controller {
         p1=0;
     }
     
-    public void getkosti(){
-        kosti = new String[x.length()*2+1][y.length()*2+1];
+    public void fillKostenArray(){
+        kostenArray = new String[x.length()*2+1][y.length()*2+1];
         int p1=0;
         int p2=0;
         for (int i=1;i<x.length()*2+1;i++){
@@ -269,7 +271,7 @@ public class Controller {
                     j=0;
                 }
                 
-                kosti[i][j] = getcosti(i,j,p1,p2);
+                kostenArray[i][j] = getcost(i,j,p1,p2);
 
                 p2++;
                 j++;
@@ -278,133 +280,56 @@ public class Controller {
             p1++;
             i++;
         }
-
-        p1=0;
-        p2=0;
-        for (int i=1;i<x.length()*2+1;i++){
-            for (int j=1;j<y.length()*2+1;j++){
-                if(p2==0){
-                    j=0;
-                }
-
-                if(kosti[i][j] == null){
-                    kosti[i][j]= " ";
-                }
-
-                p2++;
-                j++;
-            }
-            p2=0;
-            p1++;
-            i++;
-        }
-
-        p1=0;
-        p2=0;
-        for (int i=1;i<x.length()*2+1;i++){
-            if(p1==0){
-                i=0;
-            }
-            for (int j=1;j<y.length()*2+1;j++){
-
-                if(kosti[i][j]== null){
-                    kosti[i][j]= " ";
-                }
-
-                p2++;
-                j++;
-            }
-            p2=0;
-            p1++;
-            i++;
-        }
-        for (int i=1;i<x.length()*2+1;i++){
-            for (int j=1;j<y.length()*2+1;j++){
-
-                if(kosti[i][j]== null){
-                    kosti[i][j]= " ";
-                }
-
-                j++;
-            }
-            i++;
-        }
-
-        p1=0;
-        p2=0;
-        for (int i=1;i<x.length()*2+1;i++){
-            if(p1==0){
-                i=0;
-            }
-            for (int j=1;j<y.length()*2+1;j++){
-                if(p2==0){
-                    j=0;
-                }
-
-                System.out.print(kosti[i][j]);
-                System.out.print("\t");
-
-                p2++;
-            }
-            System.out.println("");
-            p2=0;
-            p1++;
-        }
-
-
-        
-        
-        
     }
 
-    //Ermittelt die Kosten für jede Mutation
-    public String getcosti(int i, int j, int p1, int p2){
+    //Ermittelt die Kosten für jede Mutation und die dazugehörigen Striche
+    public String getcost(int i, int j, int p1, int p2){
 
         //Wenn i = 0 und j = 0 ist, gibt es logischerweise keine Kosten
         if (i==0&&j==0){
-            return kosti[i][j]="0";
+            return kostenArray[i][j]="0";
         } else
             //Wenn i = 0 ist, dann ist nur einfügen möglich
             if(i==0){
-                kosti[i][j-1]="-";
-                return einfuegeni(i,j);
+                kostenArray[i][j-1]="-";
+                return einfuegen(i,j);
             } else
                 //Wenn j = 0 ist, dann ist nur streichen möglich
                 if(j==0){
-                    kosti[i-1][j]="|";
-                    return streicheni(i,j);
+                    kostenArray[i-1][j]="|";
+                    return streichen(i,j);
                 } else{
 
                     //Wenn die Zeichen gleich sind, dann gibt es logischerweise keine weiteren Kosten, als die bisherigen
                     if(x.substring(p1-1,p1).equals(y.substring(p2-1,p2))){
-                        kosti[i-1][j-1] = "\\";
-                        return kosti[i-2][j-2];
+                        kostenArray[i-1][j-1] = "\\";
+                        return kostenArray[i-2][j-2];
 
                     }
 
-                    int[] costs = {Integer.parseInt(streicheni(i,j)),Integer.parseInt(einfuegeni(i,j)),Integer.parseInt(ersetzteni(i,j))};
-                    int[] costs2 = {Integer.parseInt(streicheni(i,j)),Integer.parseInt(einfuegeni(i,j)),Integer.parseInt(ersetzteni(i,j))};
+                    int[] costs = {Integer.parseInt(streichen(i,j)),Integer.parseInt(einfuegen(i,j)),Integer.parseInt(ersetzten(i,j))};
+                    int[] costs2 = {Integer.parseInt(streichen(i,j)),Integer.parseInt(einfuegen(i,j)),Integer.parseInt(ersetzten(i,j))};
 
                     Arrays.sort(costs);
 
-                    //Überprüft, welche der drei Möglichkeiten die geringsten Kosten hat
+                    //Überprüft, welche der drei Möglichkeiten die geringsten Kosten hat und ob andere gleichviel kosten
                     if(costs[0]==costs2[0]){
-                        kosti[i-1][j]="|";
+                        kostenArray[i-1][j]="|";
                         if(costs[0]==costs2[1]){
-                            kosti[i][j-1]="-";
+                            kostenArray[i][j-1]="-";
                         }
                         if (costs[0]==costs2[2]){
-                            kosti[i-1][j-1]="\\";
+                            kostenArray[i-1][j-1]="\\";
                         }
                         return Integer.toString(costs2[0]);
                     }else if(costs[0]==costs2[1]){
                         if (costs[0]==costs2[2]){
-                            kosti[i-1][j-1]="\\";
+                            kostenArray[i-1][j-1]="\\";
                         }
-                        kosti[i][j-1]="-";
+                        kostenArray[i][j-1]="-";
                         return Integer.toString(costs2[1]);
                     }else if(costs[0]==costs2[2]){
-                        kosti[i-1][j-1]="\\";
+                        kostenArray[i-1][j-1]="\\";
                         return Integer.toString(costs2[2]);
                     }
 
@@ -416,31 +341,39 @@ public class Controller {
 
     }
 
-    public String streicheni(int i, int j){
-        int p = Integer.parseInt(kosti[i-2][j])+2;
+    //Erste der drei Mutations-Möglichkeiten
+    public String streichen(int i, int j){
+        int p = Integer.parseInt(kostenArray[i-2][j])+2;
 
         return Integer.toString(p);
 
     }
 
-    public String einfuegeni(int i, int j){
-        int p = Integer.parseInt(kosti[i][j-2])+2;
+    //Zweite der drei Mutations-Möglichkeiten
+    public String einfuegen(int i, int j){
+        int p = Integer.parseInt(kostenArray[i][j-2])+2;
 
         return Integer.toString(p);
 
     }
 
-    public String ersetzteni(int i, int j){
-        int p = Integer.parseInt(kosti[i-2][j-2])+3;
+    //Dritte der drei Mutations-Möglichkeiten
+    public String ersetzten(int i, int j){
+        int p = Integer.parseInt(kostenArray[i-2][j-2])+3;
 
         return Integer.toString(p);
 
     }
 
 
-    //Setzt einfach den Inhalt des GridPane zurück
+    //Setzt alles auf Anfang zurück
     public void reset(){
 
+        //Der Inhalt des errMsgField Labels wird auf "" gesetzt
+        errMsgField.setText("");
+
+
+        //Alle Werte im grossen GridPane (kostenGrid) werden auf "" gesetzt
         int p1=0;
         int p2=0;
         for (int i=1;i<x.length()*2+1;i++) {
@@ -458,8 +391,8 @@ public class Controller {
             p2=0;
         }
 
-        errMsgField.setText("");
 
+        //Die Inhalte der Sidebars werden auf "" gesetzt
         for(int i=1;i<x.length()*2+1;i++) {
             xcells[0][i].setText("");
             i++;
