@@ -82,31 +82,38 @@ public class Controller {
 
 
 
+
     }
 
    //This method is binded to the startButton.
     @FXML
     private void start(ActionEvent f){
 
+        //Resets all already entered values
+        reset();
+
+
         //Checks, if both fields are empty
         if (field1.getText().isEmpty()&& field2.getText().isEmpty()){
-            reset();
-            errMsgField.setText("Please enter two DNA sequence.");
+            setErrorMessage("Invalid Input! Please only enter: \nA(Adenin), C(Cytosin), G(Guanin) or T(Thymin) in capital letters!\nBoth fields must contain at least one of those letters!");
         } else
             //Checks, if one of the two fields is empty
             if(field2.getText().isEmpty() || field1.getText().isEmpty()){
-            reset();
-            errMsgField.setText("Please enter two DNA sequence.");
-        } else
+                setErrorMessage("Invalid Input! Please only enter: \nA(Adenin), C(Cytosin), G(Guanin) or T(Thymin) in capital letters!\nBoth fields must contain at least one of those letters!");
+
+            } else
             //Checks, if the content of the two fields is the same
             if(field1.getText().equals(field2.getText())){
-                reset();
-                errMsgField.setText("Please enter two different DNA sequence.");
-        }
+                setErrorMessage("Invalid Input! Please only enter: \nA(Adenin), C(Cytosin), G(Guanin) or T(Thymin) in capital letters!\nContent of both fields can't be the same!");
+
+
+            } else
+
+            if (correctString()){
+                setErrorMessage("Invalid Input! Please only enter: \nA(Adenin), C(Cytosin), G(Guanin) or T(Thymin) in capital letters!");
+            }
             //If none of the above cases apply, then the determination of the costs begins
         else{
-            //Resets all already entered values
-            reset();
 
             //Transferring the entered DNA sequences to the strings x and y
             x = field1.getText();
@@ -116,9 +123,36 @@ public class Controller {
             getsidebars();
             fillCostArray();
             displayCosts();
+            solveMaze();
+            printMaze();
         }
 
 
+    }
+
+    public boolean correctString(){
+        String[] xStringSplit = field1.getText().split("");
+        String[] yStringSplit = field2.getText().split("");
+
+        for (int i=0; i < xStringSplit.length;i++){
+            if (!xStringSplit[i].contains("A")&& !xStringSplit[i].contains("C")&& !xStringSplit[i].contains("G")&& !xStringSplit[i].contains("T")){
+                return true;
+            }
+        }
+
+        for (int i=0; i < yStringSplit.length;i++){
+            if (!yStringSplit[i].contains("A")&& !yStringSplit[i].contains("C")&& !yStringSplit[i].contains("G")&& !yStringSplit[i].contains("T")){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void setErrorMessage(String content){
+        StringBuilder msg = new StringBuilder();
+        msg.append(content);
+        errMsgField.setText(msg.toString());
+        errMsgField.setMinHeight(25.0*content.split("\n").length);
     }
     //This method fills in the panes xpanee and ypanee with the descriptions
     public void getsidebars(){
@@ -421,4 +455,123 @@ public class Controller {
             p4++;
         }
     }
+
+
+
+
+
+
+
+
+    int a = x.length()*2+1;
+    int b = y.length()*2+1;
+    boolean[][] maze;
+    boolean[][] wasHere;
+    boolean[][] correctPath;
+    int startX=0,starty=0;
+    int endX=x.length(),endY=y.length();
+
+    public void solveMaze(){
+        maze = new boolean[x.length()*2+1][y.length()*2+1];
+        wasHere = new boolean[x.length()*2+1][y.length()*2+1];
+        correctPath = new boolean[x.length()*2+1][y.length()*2+1];
+
+        int p1=0;
+        int p2=0;
+        for (int i=1;i<x.length()*2+1;i++) {
+            if(p1==0){
+                i=0;
+            }
+            for (int j = 1; j < y.length()*2+1; j++) {
+                if(p2==0){
+                    j=0;
+                }
+                if (costArray[i][j]==null || costArray[i][j]==""|| costArray[i][j]==" "){
+                    maze[i][j]=true;
+                } else{
+                    maze[i][j]=false;
+                }
+                p2++;
+            }
+            p1++;
+            p2=0;
+        }
+
+
+        for (int row=0;row<maze.length;row++){
+            for (int col=0;col<maze[row].length;col++){
+                wasHere[row][col]=false;
+                correctPath[row][col]=false;
+            }
+        }
+        boolean b=recursiveSolve(startX, starty);
+
+
+
+
+    }
+
+    public boolean recursiveSolve(int x, int y){
+        if (x==endX&&y==endY) return true;
+
+        if (maze[x][y] || wasHere[x][y]) return false;
+
+        wasHere[x][y]=true;
+
+        if (x!=0){
+            if (recursiveSolve(x-1,y)){
+                correctPath[x][y]=true;
+                return true;
+            }
+        }
+        if (x!=y-1){
+            if (recursiveSolve(x+1,y)){
+                correctPath[x][y] = true;
+                return true;
+            }
+        }
+        if (y!=0){
+            if (recursiveSolve(x, y-1)){
+                correctPath[x][y]=true;
+                return true;
+            }
+        }
+        if (y!=x-1){
+            if (recursiveSolve(x,y+1)){
+                correctPath[x][y]=true;
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    public void printMaze(){
+
+        int p1=0;
+        int p2=0;
+        for (int i=1;i<x.length()*2+1;i++) {
+            if(p1==0){
+                i=0;
+            }
+            for (int j = 1; j < y.length()*2+1; j++) {
+                if(p2==0){
+                    j=0;
+                }
+                if (maze[i][j]){
+                    System.out.print("X");
+                } else{
+                    System.out.print("Y");
+                }
+                System.out.print("\t");
+                p2++;
+            }
+            System.out.print("\n");
+            p1++;
+            p2=0;
+        }
+
+    }
+
+
 }
